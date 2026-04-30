@@ -11,6 +11,10 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Email invalide." }, { status: 400 });
     }
 
+    if (!process.env.RESEND_API_KEY) {
+      return Response.json({ error: "Clé API Resend manquante." }, { status: 500 });
+    }
+
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Ajoute le contact à l'audience Resend (si configurée)
