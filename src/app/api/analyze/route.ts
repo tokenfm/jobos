@@ -1,4 +1,5 @@
 import { anthropic } from "@/lib/anthropic";
+import { ratelimit } from "@/lib/ratelimit";
 import { NextRequest } from "next/server";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -129,6 +130,21 @@ function calculateScores(data: ExtractionResult) {
 // ─── Route (streaming SSE) ────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
+  if (ratelimit) {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
+    const { success, remaining } = await ratelimit.limit(ip);
+    if (!success) {
+      return Response.json(
+        { error: `Limite atteinte. Tu as utilisé tes 5 analyses gratuites aujourd'hui. Réessaie demain.` },
+        {
+          status: 429,
+          headers: { "X-RateLimit-Remaining": String(remaining) },
+        }
+      );
+    }
+  }
+
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({

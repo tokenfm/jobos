@@ -136,6 +136,12 @@ export default function Home() {
 
     try {
       const response = await fetch("/api/analyze", { method: "POST", body: formData });
+
+      if (!response.ok && response.status !== 200) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error ?? "Une erreur est survenue.");
+      }
+
       if (!response.body) throw new Error("Pas de réponse du serveur.");
 
       const reader = response.body.getReader();
