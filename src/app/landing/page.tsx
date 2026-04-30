@@ -55,9 +55,22 @@ export default function Landing() {
     e.preventDefault();
     if (!email.trim()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
-    setSubmitted(true);
-    setLoading(false);
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Erreur lors de l'inscription.");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Une erreur est survenue.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
