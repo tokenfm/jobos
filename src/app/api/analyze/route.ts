@@ -1,6 +1,5 @@
 import { anthropic } from "@/lib/anthropic";
 import { NextRequest } from "next/server";
-import { PDFParse } from "pdf-parse";
 
 interface Dimension {
   name: string;
@@ -33,17 +32,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const cvBuffer = Buffer.from(await cvFile.arrayBuffer());
-    const parser = new PDFParse({ data: cvBuffer });
-    const pdfData = await parser.getText();
-    const cvText = pdfData.text.trim();
-
-    if (!cvText) {
-      return Response.json(
-        { error: "Impossible d'extraire le texte du PDF. Vérifie que le fichier n'est pas scanné." },
-        { status: 400 }
-      );
-    }
+    const cvBuffer = await cvFile.arrayBuffer();
+    const cvBase64 = Buffer.from(cvBuffer).toString("base64");
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
@@ -51,15 +41,23 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: `Tu es un expert en recrutement et rédaction professionnelle en France.
-
-CV DU CANDIDAT :
-${cvText}
+          content: [
+            {
+              type: "document",
+              source: {
+                type: "base64",
+                media_type: "application/pdf",
+                data: cvBase64,
+              },
+            },
+            {
+              type: "text",
+              text: `Tu es un expert en recrutement et rédaction professionnelle en France. Analyse le CV ci-joint et l'offre d'emploi suivante.
 
 OFFRE D'EMPLOI :
 ${jobOffer}
 
-Analyse la compatibilité entre ce CV et cette offre. Réponds UNIQUEMENT avec un objet JSON valide (sans markdown, sans backticks) :
+Réponds UNIQUEMENT avec un objet JSON valide (sans markdown, sans backticks) :
 {
   "score": <number 0-100>,
   "dimensions": [
@@ -79,6 +77,8 @@ Règles :
 - Le score global est la moyenne pondérée des dimensions (compétences techniques × 0.35, expérience × 0.30, formation × 0.15, soft skills × 0.10, adéquation × 0.10).
 - La lettre doit faire référence à des éléments spécifiques du CV et de l'offre.
 - Fournis au moins 5 conseils CV distincts et actionnables.`,
+            },
+          ],
         },
       ],
     });
