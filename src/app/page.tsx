@@ -20,12 +20,20 @@ interface AnalysisResult {
   cvTips: CvTip[];
 }
 
+function Sparkle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12 2C12 6.8 17.2 12 22 12C17.2 12 12 17.2 12 22C12 17.2 6.8 12 2 12C6.8 12 12 6.8 12 2Z" />
+    </svg>
+  );
+}
+
 function CircularScore({ score }: { score: number }) {
   const r = 54;
   const circumference = 2 * Math.PI * r;
   const filled = (score / 100) * circumference;
   const color =
-    score >= 75 ? "#10b981" : score >= 50 ? "#3b82f6" : score >= 25 ? "#f59e0b" : "#ef4444";
+    score >= 75 ? "#10b981" : score >= 50 ? "#8b5cf6" : score >= 25 ? "#f59e0b" : "#ef4444";
 
   return (
     <div className="relative flex items-center justify-center">
@@ -57,7 +65,7 @@ function scoreColor(s: number) {
   return s >= 75
     ? "text-emerald-400"
     : s >= 50
-      ? "text-blue-400"
+      ? "text-violet-400"
       : s >= 25
         ? "text-amber-400"
         : "text-red-400";
@@ -67,7 +75,7 @@ function barColor(s: number) {
   return s >= 75
     ? "bg-emerald-500"
     : s >= 50
-      ? "bg-blue-500"
+      ? "bg-violet-500"
       : s >= 25
         ? "bg-amber-500"
         : "bg-red-500";
@@ -143,13 +151,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070c16] text-white">
+    <div className="min-h-screen bg-[#0a0714] text-white">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-white/[0.06] backdrop-blur-md bg-[#070c16]/80">
+      <header className="sticky top-0 z-10 border-b border-white/[0.06] backdrop-blur-md bg-[#0a0714]/80">
         <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-sm shadow-lg shadow-blue-500/25">
-              J
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-violet-500 to-violet-700 flex items-center justify-center shadow-lg shadow-violet-500/25">
+              <Sparkle className="h-4 w-4 text-white" />
             </div>
             <span className="text-lg font-semibold tracking-tight">JobOS</span>
           </div>
@@ -164,14 +172,14 @@ export default function Home() {
         {!result && (
           <>
             <div className="mb-12 text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/8 px-3 py-1 text-xs text-blue-400 mb-6">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/8 px-3 py-1 text-xs text-violet-400 mb-6">
+                <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
                 Propulsé par Claude
               </div>
               <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-4">
                 Optimise ta candidature
                 <br />
-                <span className="text-blue-400">en quelques secondes</span>
+                <span className="text-violet-400">en quelques secondes</span>
               </h1>
               <p className="text-zinc-400 max-w-xl mx-auto">
                 Upload ton CV, colle l&apos;offre d&apos;emploi et obtiens un score
@@ -194,7 +202,7 @@ export default function Home() {
                     onClick={() => document.getElementById("cv-upload")?.click()}
                     className={`relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-12 transition-all cursor-pointer select-none ${
                       dragActive
-                        ? "border-blue-400 bg-blue-500/8"
+                        ? "border-violet-400 bg-violet-500/8"
                         : cvFile
                           ? "border-emerald-500/40 bg-emerald-500/5 hover:border-emerald-400/60"
                           : "border-zinc-700/60 bg-zinc-900/20 hover:border-zinc-600 hover:bg-zinc-900/40"
@@ -244,7 +252,7 @@ export default function Home() {
                     onChange={(e) => setJobOffer(e.target.value)}
                     placeholder="Colle ici le texte de l'offre d'emploi…"
                     rows={11}
-                    className="w-full rounded-2xl border-2 border-zinc-700/60 bg-zinc-900/20 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-blue-500/60 focus:outline-none resize-none transition-colors hover:border-zinc-600"
+                    className="w-full rounded-2xl border-2 border-zinc-700/60 bg-zinc-900/20 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-violet-500/60 focus:outline-none resize-none transition-colors hover:border-zinc-600"
                   />
                 </div>
               </div>
@@ -258,7 +266,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading || !cvFile || !jobOffer.trim()}
-                className="w-full rounded-2xl bg-blue-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-500/10 transition-all hover:bg-blue-500 hover:shadow-blue-500/20 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-30"
+                className="w-full rounded-2xl bg-violet-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-500/10 transition-all hover:bg-violet-500 hover:shadow-violet-500/20 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-30"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2.5">
@@ -329,7 +337,7 @@ export default function Home() {
                 <button
                   onClick={handleCopy}
                   className={`inline-flex items-center gap-1.5 text-sm transition-colors ${
-                    copied ? "text-emerald-400" : "text-blue-400 hover:text-blue-300"
+                    copied ? "text-emerald-400" : "text-violet-400 hover:text-violet-300"
                   }`}
                 >
                   {copied ? (
@@ -365,8 +373,8 @@ export default function Home() {
                     key={i}
                     className="flex gap-3 rounded-xl border border-white/[0.05] bg-zinc-950/60 p-4"
                   >
-                    <div className="h-7 w-7 shrink-0 rounded-lg bg-blue-500/15 flex items-center justify-center">
-                      <span className="text-xs font-bold text-blue-400">{i + 1}</span>
+                    <div className="h-7 w-7 shrink-0 rounded-lg bg-violet-500/15 flex items-center justify-center">
+                      <span className="text-xs font-bold text-violet-400">{i + 1}</span>
                     </div>
                     <div>
                       <p className="text-xs font-semibold text-zinc-200 mb-0.5">{tip.category}</p>

@@ -2,6 +2,14 @@
 
 import { useState } from "react";
 
+function Sparkle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12 2C12 6.8 17.2 12 22 12C17.2 12 12 17.2 12 22C12 17.2 6.8 12 2 12C6.8 12 12 6.8 12 2Z" />
+    </svg>
+  );
+}
+
 const features = [
   {
     icon: (
@@ -53,33 +61,30 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070c16] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#0a0714] text-white overflow-x-hidden">
       {/* Nav */}
       <nav className="mx-auto max-w-5xl px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-sm shadow-lg shadow-blue-500/25">
-            J
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-violet-500 to-violet-700 flex items-center justify-center shadow-lg shadow-violet-500/25">
+            <Sparkle className="h-4 w-4 text-white" />
           </div>
           <span className="text-lg font-semibold tracking-tight">JobOS</span>
         </div>
-        <a
-          href="/"
-          className="text-sm text-zinc-400 hover:text-white transition-colors"
-        >
+        <a href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">
           Essayer l&apos;app →
         </a>
       </nav>
 
       {/* Hero */}
       <section className="mx-auto max-w-3xl px-6 pt-16 pb-24 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/8 px-3 py-1 text-xs text-blue-400 mb-8">
-          <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+        <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/8 px-3 py-1 text-xs text-violet-400 mb-8">
+          <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
           Bêta privée — places limitées
         </div>
 
         <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
           Le copilote IA de ta{" "}
-          <span className="text-blue-400">recherche d&apos;emploi</span>
+          <span className="text-violet-400">recherche d&apos;emploi</span>
         </h1>
 
         <p className="text-lg text-zinc-400 max-w-xl mx-auto mb-12 leading-relaxed">
@@ -87,7 +92,6 @@ export default function Landing() {
           français &mdash; conçu pour les étudiants européens.
         </p>
 
-        {/* Email form */}
         {submitted ? (
           <div className="inline-flex items-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/8 px-6 py-4 text-emerald-400">
             <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -108,12 +112,12 @@ export default function Landing() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="ton@email.com"
-              className="w-full rounded-xl border-2 border-zinc-700/60 bg-zinc-900/40 px-4 py-3.5 text-sm text-white placeholder-zinc-600 focus:border-blue-500/60 focus:outline-none transition-colors"
+              className="w-full rounded-xl border-2 border-zinc-700/60 bg-zinc-900/40 px-4 py-3.5 text-sm text-white placeholder-zinc-600 focus:border-violet-500/60 focus:outline-none transition-colors"
             />
             <button
               type="submit"
               disabled={loading}
-              className="w-full sm:w-auto shrink-0 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/15 transition-all hover:bg-blue-500 hover:shadow-blue-500/25 active:scale-[0.98] disabled:opacity-60 whitespace-nowrap"
+              className="w-full sm:w-auto shrink-0 rounded-xl bg-violet-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/15 transition-all hover:bg-violet-500 hover:shadow-violet-500/25 active:scale-[0.98] disabled:opacity-60 whitespace-nowrap"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -142,14 +146,11 @@ export default function Landing() {
             Comment ça marche
           </p>
           <div className="grid sm:grid-cols-3 gap-6">
-            {steps.map((step, i) => (
+            {steps.map((step) => (
               <div key={step.number} className="flex items-center gap-4 sm:flex-col sm:text-center sm:gap-3">
-                <div className="shrink-0 h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                  <span className="text-xs font-bold text-blue-400">{step.number}</span>
+                <div className="shrink-0 h-10 w-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-violet-400">{step.number}</span>
                 </div>
-                {i < steps.length - 1 && (
-                  <div className="hidden sm:block absolute" />
-                )}
                 <p className="text-sm font-medium text-zinc-300">{step.label}</p>
               </div>
             ))}
@@ -169,9 +170,9 @@ export default function Landing() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl border border-white/[0.07] bg-zinc-900/40 p-6 hover:border-blue-500/20 hover:bg-zinc-900/60 transition-all"
+              className="rounded-2xl border border-white/[0.07] bg-zinc-900/40 p-6 hover:border-violet-500/20 hover:bg-zinc-900/60 transition-all"
             >
-              <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/15 flex items-center justify-center text-blue-400 mb-4">
+              <div className="h-10 w-10 rounded-xl bg-violet-500/10 border border-violet-500/15 flex items-center justify-center text-violet-400 mb-4">
                 {f.icon}
               </div>
               <h3 className="font-semibold text-white mb-2">{f.title}</h3>
@@ -208,12 +209,12 @@ export default function Landing() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ton@email.com"
-                className="w-full rounded-xl border-2 border-zinc-700/60 bg-zinc-950/60 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-blue-500/60 focus:outline-none transition-colors"
+                className="w-full rounded-xl border-2 border-zinc-700/60 bg-zinc-950/60 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-violet-500/60 focus:outline-none transition-colors"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-auto shrink-0 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-500 active:scale-[0.98] disabled:opacity-60 whitespace-nowrap"
+                className="w-full sm:w-auto shrink-0 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.98] disabled:opacity-60 whitespace-nowrap"
               >
                 Rejoindre la bêta
               </button>
@@ -226,14 +227,12 @@ export default function Landing() {
       <footer className="border-t border-white/[0.06] py-8">
         <div className="mx-auto max-w-5xl px-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded-md bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-xs">
-              J
+            <div className="h-6 w-6 rounded-md bg-gradient-to-br from-violet-500 to-violet-700 flex items-center justify-center">
+              <Sparkle className="h-3 w-3 text-white" />
             </div>
             <span className="text-sm font-medium text-zinc-400">JobOS</span>
           </div>
-          <p className="text-xs text-zinc-600">
-            Conçu pour les étudiants européens
-          </p>
+          <p className="text-xs text-zinc-600">Conçu pour les étudiants européens</p>
         </div>
       </footer>
     </div>
